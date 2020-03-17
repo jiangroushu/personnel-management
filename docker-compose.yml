@@ -1,0 +1,22 @@
+version: '2'
+
+networks:
+  dipole.tech:
+    external:
+      name: net_dipole
+
+services:
+  wattime-admin.dipole.tech:
+    container_name: wattime-admin.dipole.tech
+    image: dipole/wattime-admin
+    build: .
+    restart: always
+    privileged: true
+    ports:
+      - 8081:80
+    environment:
+      TIME_ZONE: Asia/Shanghai
+    networks:
+      dipole.tech:
+        aliases:
+          - wattime-admin.dipole.tech
