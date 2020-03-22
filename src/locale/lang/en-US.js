@@ -44,7 +44,7 @@ export default {
     drag_drawer_page: 'Draggable Drawer',
     tree_select_page: 'Tree Selector',
 
-    dashboard: 'Dashboard',
+    dashboard: '员工信息管理',
     user: 'User',
     history: 'History',
 

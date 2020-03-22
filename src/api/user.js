@@ -7,7 +7,7 @@ export default class User {
      */
     static login(data) {
         return fetch({
-            url: '/users/login',
+            url: '/user/login',
             method: 'post',
             data
         })
@@ -17,10 +17,11 @@ export default class User {
      * @description 获取登录用户信息
      *
      */
-    static getUserInfo() {
+    static getUserInfo(data) {
         return fetch({
-            url: '/oauth/v1/user/manage/user_info',
-            method: 'get'
+            url: `/user/getUserName&token=${data}`,
+            method: 'get',
+            data
         })
     }
     /**

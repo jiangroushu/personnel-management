@@ -7,7 +7,7 @@ export default {
         avatarImgPath: '',
         token: getToken(),
         access: '',
-        hasGetInfo: true,
+        hasGetInfo: false,
         unreadCount: 0,
         messageUnreadList: [],
         messageReadedList: [],
@@ -71,12 +71,7 @@ export default {
                     password
                 })
                     .then(res => {
-                        commit('setToken', res.data)
-                        commit('setToken', {
-                            token:
-                                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQ2MTE3OTMsImlhdCI6MTU4NDAwNjk5MywibmJmIjoxNTg0MDA2OTkzLCJ0eXBlIjoiYnVzaW5lc3MiLCJ1aWQiOiJDMjAyMDAxMTMwMDAxIiwidXNlcm5hbWUiOiJ6aG9uZ2xhaTAxIn0.k2LIn8PmBdoCfl2l140N-rutXf_8goz68NodE1cqCy8',
-                            exp_time: 1584611793
-                        })
+                        commit('setToken', res.data.data)
                         resolve()
                     })
                     .catch(err => {
@@ -108,7 +103,8 @@ export default {
                 try {
                     User.getUserInfo(state.token)
                         .then(res => {
-                            const data = res.data
+                            const data = res.data.data
+                            console.log(res.data.data)
                             commit('setAvatar', 'https://pic2.zhimg.com/80/v2-8df0e1ada7af09d3c62f2ba5ec4e4266_hd.jpg')
                             commit('setUserName', data.username)
                             commit('setUserId', data.id)

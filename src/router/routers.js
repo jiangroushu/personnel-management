@@ -27,51 +27,51 @@ export default [
         },
         component: () => import('@/view/login/login.vue')
     },
-    // {
-    //     path: '/',
-    //     name: '_home',
-    //     redirect: '/dashboard',
-    //     component: Main,
-    //     meta: {
-    //         notCache: true
-    //     },
-    //     children: [
-    //         {
-    //             path: '/dashboard',
-    //             name: 'dashboard',
-    //             meta: {
-    //                 title: 'Dashboard',
-    //                 notCache: true,
-    //                 icon: 'md-pulse'
-    //             },
-    //             component: () => import('@/view/single-page/dashboard')
-    //         }
-    //     ]
-    // },
     {
         path: '/',
-        name: '_user',
-        redirect: '/home',
+        name: '_home',
+        redirect: '/dashboard',
         component: Main,
         meta: {
             notCache: true
         },
         children: [
             {
-                path: 'home',
-                name: '员工信息管理',
+                path: '/dashboard',
+                name: 'dashboard',
                 meta: {
                     title: '员工信息管理',
                     notCache: true,
                     icon: 'md-people'
                 },
-                props: route => ({
-                    isAdd: Boolean(route.query.isAdd)
-                }),
                 component: () => import('@/view/single-page/user')
             }
         ]
     },
+    // {
+    //     path: '/',
+    //     name: '_user',
+    //     redirect: '/home',
+    //     component: Main,
+    //     meta: {
+    //         notCache: true
+    //     },
+    //     children: [
+    //         {
+    //             path: '/home',
+    //             name: '员工信息管理',
+    //             meta: {
+    //                 title: '员工信息管理',
+    //                 notCache: true,
+    //                 icon: 'md-people'
+    //             },
+    //             props: route => ({
+    //                 isAdd: Boolean(route.query.isAdd)
+    //             }),
+    //             component: () => import('@/view/single-page/user')
+    //         }
+    //     ]
+    // },
     {
         path: '/message',
         name: 'message',
