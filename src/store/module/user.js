@@ -104,7 +104,6 @@ export default {
                     User.getUserInfo(state.token)
                         .then(res => {
                             const data = res.data.data
-                            console.log(res.data.data)
                             commit('setAvatar', 'https://pic2.zhimg.com/80/v2-8df0e1ada7af09d3c62f2ba5ec4e4266_hd.jpg')
                             commit('setUserName', data.username)
                             commit('setUserId', data.id)

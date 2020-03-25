@@ -7,7 +7,7 @@
         <vue-canvas-nest :config="{ color: '0, 0, 0, 0.45' }"> </vue-canvas-nest>
         <div class="login-top">
             <img src="../../assets/images/logo-min.png" alt="" />
-            人事管理系统
+            企业人事管理系统
         </div>
         <!-- <div class="login-desc">Dipole helps energy providers to unlock marketpalce.</div> -->
         <div class="login-desc"></div>

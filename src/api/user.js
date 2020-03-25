@@ -24,6 +24,43 @@ export default class User {
             data
         })
     }
+
+    /**
+     * @description 获取用户列表
+     *
+     */
+    static getUserList(data) {
+        return fetch({
+            url: '/userInfo/getAllUserInfo',
+            method: 'get',
+            params: data
+        })
+    }
+
+    /**
+     * @description 修改用户信息
+     *
+     */
+    static updateUser(data) {
+        return fetch({
+            url: '/userInfo/saveUserInfo',
+            method: 'post',
+            data
+        })
+    }
+
+    /**
+     * @description 新增用户信息
+     *
+     */
+    static addUser(data) {
+        return fetch({
+            url: '/userInfo/addUser',
+            method: 'post',
+            data
+        })
+    }
+
     /**
      *
      * @description 刷新token
@@ -44,18 +81,6 @@ export default class User {
         return fetch({
             url: '/v1/adminUser/logout',
             method: 'get'
-        })
-    }
-
-    /**
-     * @description 获取用户列表
-     *
-     */
-    static getUserList(data) {
-        return fetch({
-            url: '/v1/appUser',
-            method: 'get',
-            params: data
         })
     }
 
