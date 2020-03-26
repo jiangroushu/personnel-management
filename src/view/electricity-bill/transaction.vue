@@ -6,7 +6,6 @@
             <Input placeholder="请输入……" clearable style="width: 200px" @keyup.enter.native="search" v-model="search_model" />
             <Button type="primary" style="margin-left:40px;" @click="search">搜索</Button>
             <Button style="margin-left:20px;" @click="reset">重置</Button>
-            <Button type="primary" icon="md-add" style="float: right;">添加</Button>
         </div>
         <Table :columns="columns1" :loading="loading" :data="data1"></Table>
         <Page
@@ -75,29 +74,6 @@ export default {
                         title: '备注',
                         key: 'uid',
                         align: 'center'
-                    },
-                    {
-                        title: '操作',
-                        key: 'created_time',
-                        align: 'center',
-                        render: (h, row) => {
-                            return h(
-                                'div',
-                                {
-                                    style: {
-                                        color: '#9a40ff',
-                                        fontSize: '14px',
-                                        cursor: 'pointer'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            console.log(row)
-                                        }
-                                    }
-                                },
-                                '修改'
-                            )
-                        }
                     }
                 ]
             }
