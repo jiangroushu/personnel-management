@@ -2,7 +2,7 @@
     <div class="container">
         <h1>工资管理</h1>
         <div class="button-wrap">
-            员工编号:
+            姓名:
             <Input placeholder="请输入……" clearable style="width: 200px" @keyup.enter.native="search" v-model="search_model" />
             <Button type="primary" style="margin-left:40px;" @click="search">搜索</Button>
             <Button style="margin-left:20px;" @click="reset">重置</Button>
@@ -12,7 +12,7 @@
         <Page
             :total="total"
             style="float:right;margin-top:20px;"
-            :page-size="pagination.limit"
+            :page-size="pagination.pageNum"
             :current.sync="pagination.page"
             show-sizer
             show-total
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-// import Wattime from '@/api/wattime'
+import User from '@/api/user'
 
 export default {
     data() {
@@ -31,8 +31,8 @@ export default {
             data1: [],
             search_model: '',
             pagination: {
-                limit: 10,
-                page: 1
+                page: 1,
+                pageNum: 10
             },
             total: 0,
             query: {},
@@ -48,52 +48,73 @@ export default {
                 return [
                     {
                         title: '员工编号',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'user_info_id',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `${10000 + row.user_info_id}`)
+                        }
                     },
                     {
                         title: '姓名',
-                        key: 'uname',
+                        key: 'user_nickname',
                         align: 'center'
                     },
                     {
                         title: '部门',
-                        key: 'uid',
+                        key: 'department_name',
                         align: 'center'
                     },
                     {
                         title: '基本工资',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'bath_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.bath_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '公司补贴',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'subsidy_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.subsidy_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '加班费',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'overtime_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.overtime_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '奖励金',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'reward_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.reward_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '扣除金额',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'fine_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.fine_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '总工资',
-                        key: 'uid',
-                        align: 'center'
+                        key: 'total_pay',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', `¥${parseFloat(row.total_pay).toFixed(2)}`)
+                        }
                     },
                     {
                         title: '备注',
-                        key: 'uid',
+                        key: 'wages_log',
                         align: 'center'
                     },
                     {
@@ -105,7 +126,7 @@ export default {
                                 'div',
                                 {
                                     style: {
-                                        color: '#9a40ff',
+                                        color: '#348FE4',
                                         fontSize: '14px',
                                         cursor: 'pointer'
                                     },
@@ -127,23 +148,25 @@ export default {
         async initData() {
             this.loading = true
             try {
-                // let res = await Wattime.getUserSetting({ ...this.pagination, ...this.query })
-                // if (res.message === 'OK') {
-                //     this.data1 = res.data.list
-                //     this.total = res.data.total
-                // }
+                let res = await User.getUserWagesList({ ...this.pagination, ...this.query })
+                if (res.data.code === 1) {
+                    this.data1 = res.data.data.list.data
+                    this.total = res.data.data.list.total
+                }
                 this.loading = false
             } catch (error) {
-                this.$Message.error(this.$t('data_acquisition_failed'))
+                this.loading = false
+                console.log(error)
+                this.$Message.error('数据获取失败！')
             }
         },
         changePageSize(pageSize) {
-            this.pagination.limit = pageSize
+            this.pagination.pageNum = pageSize
             this.initData()
         },
         search() {
             if (this.search_model !== '') {
-                this.query = { query: { uid: this.search_model } }
+                this.query = { query: { user_nickname: this.search_model } }
             }
             this.initData()
             this.query = {}
@@ -160,6 +183,12 @@ export default {
 .container {
     .button-wrap {
         margin-bottom: 20px;
+    }
+    /deep/ .ivu-table:after {
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper {
+        border: 0;
     }
 }
 </style>

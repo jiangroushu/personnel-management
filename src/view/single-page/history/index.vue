@@ -2,7 +2,7 @@
     <div class="container">
         <h1>招聘管理</h1>
         <div class="button-wrap">
-            员工编号:
+            适合岗位:
             <Input placeholder="请输入……" clearable style="width: 200px" @keyup.enter.native="search" v-model="search_model" />
             <Button type="primary" style="margin-left:40px;" @click="search">搜索</Button>
             <Button style="margin-left:20px;" @click="reset">重置</Button>
@@ -12,7 +12,7 @@
         <Page
             :total="total"
             style="float:right;margin-top:20px;"
-            :page-size="pagination.limit"
+            :page-size="pagination.pageNum"
             :current.sync="pagination.page"
             show-sizer
             show-total
@@ -31,7 +31,7 @@ export default {
             data1: [],
             search_model: '',
             pagination: {
-                limit: 10,
+                pageNum: 10,
                 page: 1
             },
             total: 0,
@@ -47,7 +47,7 @@ export default {
             get() {
                 return [
                     {
-                        title: '应聘岗位',
+                        title: '适合岗位',
                         key: 'uid',
                         align: 'center'
                     },
@@ -90,7 +90,7 @@ export default {
                                 'div',
                                 {
                                     style: {
-                                        color: '#9a40ff',
+                                        color: '#348FE4',
                                         fontSize: '14px',
                                         cursor: 'pointer'
                                     },
@@ -123,7 +123,7 @@ export default {
             }
         },
         changePageSize(pageSize) {
-            this.pagination.limit = pageSize
+            this.pagination.pageNum = pageSize
             this.initData()
         },
         search() {
@@ -145,6 +145,12 @@ export default {
 .container {
     .button-wrap {
         margin-bottom: 20px;
+    }
+    /deep/ .ivu-table:after {
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper {
+        border: 0;
     }
 }
 </style>

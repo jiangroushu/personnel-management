@@ -2,7 +2,7 @@
     <div class="container">
         <h1>培训管理</h1>
         <div class="button-wrap">
-            员工编号:
+            活动名称:
             <Input placeholder="请输入……" clearable style="width: 200px" @keyup.enter.native="search" v-model="search_model" />
             <Button type="primary" style="margin-left:40px;" @click="search">搜索</Button>
             <Button style="margin-left:20px;" @click="reset">重置</Button>
@@ -12,7 +12,7 @@
         <Page
             :total="total"
             style="float:right;margin-top:20px;"
-            :page-size="pagination.limit"
+            :page-size="pagination.pageNum"
             :current.sync="pagination.page"
             show-sizer
             show-total
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-// import Wattime from '@/api/wattime'
+import User from '@/api/user'
 
 export default {
     data() {
@@ -31,8 +31,8 @@ export default {
             data1: [],
             search_model: '',
             pagination: {
-                limit: 10,
-                page: 1
+                page: 1,
+                pageNum: 10
             },
             total: 0,
             query: {},
@@ -47,38 +47,34 @@ export default {
             get() {
                 return [
                     {
-                        title: '应聘岗位',
-                        key: 'uid',
+                        title: '活动名称',
+                        key: 'activity_name',
                         align: 'center'
                     },
                     {
-                        title: '姓名',
-                        key: 'uname',
+                        title: '参加部门',
+                        key: 'activity_department',
                         align: 'center'
                     },
                     {
-                        title: '性别',
-                        key: 'uid',
-                        align: 'center'
+                        title: '活动开始时间',
+                        key: 'activity_start_time',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', this.$dayjs(row.activity_start_time).format('YYYY-MM-DD HH:mm:ss'))
+                        }
                     },
                     {
-                        title: '年龄',
-                        key: 'uid',
-                        align: 'center'
+                        title: '活动结束时间',
+                        key: 'activity_end_time',
+                        align: 'center',
+                        render: (h, { row }) => {
+                            return h('div', this.$dayjs(row.activity_end_time).format('YYYY-MM-DD HH:mm:ss'))
+                        }
                     },
                     {
-                        title: '学历',
-                        key: 'uid',
-                        align: 'center'
-                    },
-                    {
-                        title: '电话',
-                        key: 'uid',
-                        align: 'center'
-                    },
-                    {
-                        title: '邮箱',
-                        key: 'uid',
+                        title: '备注',
+                        key: 'activity_log',
                         align: 'center'
                     },
                     {
@@ -90,7 +86,7 @@ export default {
                                 'div',
                                 {
                                     style: {
-                                        color: '#9a40ff',
+                                        color: '#348FE4',
                                         fontSize: '14px',
                                         cursor: 'pointer'
                                     },
@@ -100,7 +96,7 @@ export default {
                                         }
                                     }
                                 },
-                                '修改'
+                                '查看详情'
                             )
                         }
                     }
@@ -112,23 +108,25 @@ export default {
         async initData() {
             this.loading = true
             try {
-                // let res = await Wattime.getUserSetting({ ...this.pagination, ...this.query })
-                // if (res.message === 'OK') {
-                //     this.data1 = res.data.list
-                //     this.total = res.data.total
-                // }
+                let res = await User.getActivityList({ ...this.pagination, ...this.query })
+                if (res.data.code === 1) {
+                    this.data1 = res.data.data.list.data
+                    this.total = res.data.data.list.total
+                }
                 this.loading = false
             } catch (error) {
-                this.$Message.error(this.$t('data_acquisition_failed'))
+                this.loading = false
+                console.log(error)
+                this.$Message.error('数据获取失败！')
             }
         },
         changePageSize(pageSize) {
-            this.pagination.limit = pageSize
+            this.pagination.pageNum = pageSize
             this.initData()
         },
         search() {
             if (this.search_model !== '') {
-                this.query = { query: { uid: this.search_model } }
+                this.query = { query: { activity_name: this.search_model } }
             }
             this.initData()
             this.query = {}
@@ -145,6 +143,12 @@ export default {
 .container {
     .button-wrap {
         margin-bottom: 20px;
+    }
+    /deep/ .ivu-table:after {
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper {
+        border: 0;
     }
 }
 </style>

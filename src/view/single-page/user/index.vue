@@ -324,5 +324,11 @@ export default {
     .button-wrap {
         margin-bottom: 20px;
     }
+    /deep/ .ivu-table:after {
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper {
+        border: 0;
+    }
 }
 </style>

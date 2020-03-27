@@ -11,7 +11,7 @@
         <Page
             :total="total"
             style="float:right;margin-top:20px;"
-            :page-size="pagination.limit"
+            :page-size="pagination.pageNum"
             :current.sync="pagination.page"
             show-sizer
             show-total
@@ -30,7 +30,7 @@ export default {
             data1: [],
             search_model: '',
             pagination: {
-                limit: 10,
+                pageNum: 10,
                 page: 1
             },
             total: 0,
@@ -89,12 +89,12 @@ export default {
             }
         },
         changePageSize(pageSize) {
-            this.pagination.limit = pageSize
+            this.pagination.pageNum = pageSize
             this.initData()
         },
         search() {
             if (this.search_model !== '') {
-                this.query = { query: { uid: this.search_model } }
+                this.query = { query: { user_nickname: this.search_model } }
             }
             this.initData()
             this.query = {}
@@ -111,6 +111,12 @@ export default {
 .container {
     .button-wrap {
         margin-bottom: 20px;
+    }
+    /deep/ .ivu-table:after {
+        width: 0;
+    }
+    /deep/ .ivu-table-wrapper {
+        border: 0;
     }
 }
 </style>

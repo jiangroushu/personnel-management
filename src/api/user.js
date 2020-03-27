@@ -62,6 +62,30 @@ export default class User {
     }
 
     /**
+     *  @description 获取工资信息列表
+     *
+     */
+    static getUserWagesList(data) {
+        return fetch({
+            url: '/user/getUserWagesList',
+            method: 'get',
+            params: data
+        })
+    }
+
+    /**
+     *  @description 获取活动信息列表
+     *
+     */
+    static getActivityList(data) {
+        return fetch({
+            url: '/user/getActivityList',
+            method: 'get',
+            params: data
+        })
+    }
+
+    /**
      *
      * @description 刷新token
      *
@@ -81,29 +105,6 @@ export default class User {
         return fetch({
             url: '/v1/adminUser/logout',
             method: 'get'
-        })
-    }
-
-    /**
-     *
-     * @description 充值
-     */
-    static topUp(data) {
-        return fetch({
-            url: '/v1/funds/deposit',
-            method: 'post',
-            data
-        })
-    }
-    /**
-     *
-     * @description 退款
-     */
-    static refund(data) {
-        return fetch({
-            url: '/v1/funds/refund',
-            method: 'post',
-            data
         })
     }
 }
