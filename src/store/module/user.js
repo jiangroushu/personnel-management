@@ -1,4 +1,5 @@
 import { setToken, getToken } from '@/libs/util'
+import Cookies from 'js-cookie'
 import User from '@/api/user'
 export default {
     state: {
@@ -84,7 +85,7 @@ export default {
             return new Promise((resolve, reject) => {
                 User.logout(state.token)
                     .then(() => {
-                        commit('setToken', '')
+                        Cookies.set('token', '')
                         commit('setAccess', [])
                         resolve()
                     })

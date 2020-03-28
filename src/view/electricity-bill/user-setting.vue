@@ -2,7 +2,7 @@
     <div class="container">
         <h1>下班登记</h1>
         <div class="button-wrap">
-            员工编号:
+            员工姓名:
             <Input placeholder="请输入……" clearable style="width: 200px" @keyup.enter.native="search" v-model="search_model" />
             <Button type="primary" style="margin-left:40px;" @click="search">搜索</Button>
             <Button style="margin-left:20px;" @click="reset">重置</Button>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-// import Wattime from '@/api/wattime'
+import User from '@/api/user'
 
 export default {
     data() {
@@ -34,58 +34,58 @@ export default {
                 page: 1
             },
             total: 0,
-            query: {},
-            loading: false
+            query: { query: { clock_in_type: 2 } },
+            loading: false,
+            columns1: [
+                {
+                    title: '编号',
+                    type: 'index',
+                    align: 'center'
+                },
+                {
+                    title: '员工姓名',
+                    key: 'user_nickname',
+                    align: 'center'
+                },
+                {
+                    title: '部门',
+                    key: 'department_name',
+                    align: 'center'
+                },
+                {
+                    title: '下班时间',
+                    key: 'create_time',
+                    align: 'center',
+                    render: (h, { row }) => {
+                        return h('div', this.$dayjs(row.create_time).format('YYYY-MM-DD HH:mm:ss'))
+                    }
+                },
+                {
+                    title: '备注',
+                    key: 'work_attendance_log',
+                    align: 'center'
+                }
+            ]
         }
     },
     created() {
         this.initData()
     },
-    computed: {
-        columns1: {
-            get() {
-                return [
-                    {
-                        title: '员工编号',
-                        key: 'uid',
-                        align: 'center'
-                    },
-                    {
-                        title: '姓名',
-                        key: 'uname',
-                        align: 'center'
-                    },
-                    {
-                        title: '部门',
-                        key: 'uid',
-                        align: 'center'
-                    },
-                    {
-                        title: '下班时间',
-                        key: 'uid',
-                        align: 'center'
-                    },
-                    {
-                        title: '备注',
-                        key: 'uid',
-                        align: 'center'
-                    }
-                ]
-            }
-        }
-    },
+    computed: {},
     methods: {
         async initData() {
             this.loading = true
             try {
-                // let res = await Wattime.getUserSetting({ ...this.pagination, ...this.query })
-                // if (res.message === 'OK') {
-                //     this.data1 = res.data.list
-                //     this.total = res.data.total
-                // }
+                let res = await User.getUserWorkAttendanceList({ ...this.pagination, ...this.query })
+                if (res.data.code === 1) {
+                    this.data1 = res.data.data.list.data
+                    this.total = res.data.data.list.total
+                }
                 this.loading = false
             } catch (error) {
-                this.$Message.error(this.$t('data_acquisition_failed'))
+                this.loading = false
+                console.log(error)
+                this.$Message.error('数据获取失败！')
             }
         },
         changePageSize(pageSize) {
@@ -94,7 +94,7 @@ export default {
         },
         search() {
             if (this.search_model !== '') {
-                this.query = { query: { user_nickname: this.search_model } }
+                this.query = { query: { user_nickname: this.search_model, clock_in_type: 2 } }
             }
             this.initData()
             this.query = {}

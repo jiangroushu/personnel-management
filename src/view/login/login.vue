@@ -12,12 +12,7 @@
         <!-- <div class="login-desc">Dipole helps energy providers to unlock marketpalce.</div> -->
         <div class="login-desc"></div>
         <login-form @on-success-valid="handleSubmit" :loading="loading"></login-form>
-        <div class="login-bottom">
-            <div style="cursor: pointer;">Terms of Service</div>
-            <div>
-                Copyright © 2019 Dipole Tech
-            </div>
-        </div>
+        <div class="login-bottom"></div>
     </div>
 </template>
 

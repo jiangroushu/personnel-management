@@ -7,7 +7,7 @@
             <i-input type="password" v-model="form.password" prefix="md-lock" placeholder="请输入密码" size="large"> </i-input>
         </FormItem>
         <FormItem>
-            <Button @click="handleSubmit" :loading="loading" type="primary" size="large" long>Signin</Button>
+            <Button @click="handleSubmit" :loading="loading" type="primary" size="large" long>登录</Button>
         </FormItem>
     </Form>
 </template>

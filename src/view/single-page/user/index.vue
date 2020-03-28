@@ -24,7 +24,7 @@
                 <FormItem label="姓名" prop="user_nickname">
                     <i-input v-model="userFormValidate.user_nickname" style="width:240px" placeholder="请输入……"></i-input>
                 </FormItem>
-                <FormItem label="性别" prop="user_sex">
+                <FormItem label="员工性别" prop="user_sex">
                     <Select style="width:240px" placeholder="请选择……" v-model="userFormValidate.user_sex">
                         <Option :value="1">男</Option>
                         <Option :value="0">女</Option>
@@ -100,7 +100,7 @@ export default {
                     }
                 },
                 {
-                    title: '姓名',
+                    title: '员工姓名',
                     key: 'user_nickname',
                     align: 'center'
                 },
@@ -206,7 +206,7 @@ export default {
             },
             userFormValidate: {},
             userRuleValidate: {
-                user_nickname: [{ required: true, type: 'string', message: '姓名不能为空', trigger: 'blur' }],
+                user_nickname: [{ required: true, type: 'string', message: '员工姓名不能为空', trigger: 'blur' }],
                 user_sex: [{ required: true, type: 'number', message: '性别不能为空', trigger: 'change' }],
                 user_birth: [{ required: true, type: 'date', message: '出生年月日不能为空', trigger: 'blur' }],
                 user_education: [{ required: true, type: 'string', message: '学历不能为空', trigger: 'change' }],
@@ -294,8 +294,17 @@ export default {
             this.$Modal.confirm({
                 title: '温馨提示',
                 content: `确定要删除${row.user_nickname}的个人信息吗？`,
-                onOk: () => {
-                    this.$Message.info('删除成功！')
+                onOk: async () => {
+                    try {
+                        let res = await User.updateUser({ ...{ user_info_id: row.user_info_id }, ...{ updateInfo: { is_del: 1 } } })
+                        if (res.data.code === 1) {
+                            this.$Message.success('删除成功！')
+                            this.initData()
+                        }
+                    } catch (error) {
+                        console.log(error)
+                        this.$Message.error('删除失败')
+                    }
                 },
                 onCancel: () => {
                     this.$Message.info('已取消！')
@@ -310,8 +319,6 @@ export default {
                     } else {
                         this.updateUser(this.userId)
                     }
-                } else {
-                    this.$Message.error('Fail!')
                 }
             })
         }
