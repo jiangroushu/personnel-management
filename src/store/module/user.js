@@ -1,6 +1,7 @@
 import { setToken, getToken } from '@/libs/util'
 import Cookies from 'js-cookie'
 import User from '@/api/user'
+import iView from 'iview'
 export default {
     state: {
         userName: '',
@@ -73,6 +74,10 @@ export default {
                 })
                     .then(res => {
                         commit('setToken', res.data.data)
+                        Cookies.set('token', res.data.data)
+                        if (res.data.code < 0) {
+                            iView.Message.error(res.data.msg)
+                        }
                         resolve()
                     })
                     .catch(err => {
