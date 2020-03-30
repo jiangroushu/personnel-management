@@ -12,6 +12,17 @@ export default class User {
             data
         })
     }
+    /**
+     * @description 修改密码
+     *
+     */
+    static updatePassword(data) {
+        return fetch({
+            url: '/user/UpdateUser',
+            method: 'post',
+            data
+        })
+    }
 
     /**
      * @description 获取登录用户信息
