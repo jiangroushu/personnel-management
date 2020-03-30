@@ -104,16 +104,17 @@ export default {
             })
         },
         // 获取用户相关信息
-        getUserInfo({ state, commit }) {
+        getUserInfo({ commit }) {
             return new Promise((resolve, reject) => {
                 try {
-                    User.getUserInfo(state.token)
+                    User.getUserInfo(JSON.parse(Cookies.get('token')).token)
                         .then(res => {
+                            console.log(res.data)
                             const data = res.data.data
                             commit('setAvatar', 'https://pic2.zhimg.com/80/v2-8df0e1ada7af09d3c62f2ba5ec4e4266_hd.jpg')
                             commit('setUserName', data.username)
                             commit('setUserId', data.id)
-                            commit('setAccess', [])
+                            commit('setAccess', [data.username])
                             commit('setHasGetInfo', true)
                             resolve(data)
                         })
