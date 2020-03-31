@@ -187,6 +187,14 @@ export default {
                     title: '员工姓名',
                     key: 'user_nickname',
                     align: 'center'
+                },
+                {
+                    title: '是否参加',
+                    key: 'join',
+                    align: 'center',
+                    render: h => {
+                        return h('div', '是')
+                    }
                 }
             ]
         }
