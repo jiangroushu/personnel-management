@@ -74,7 +74,7 @@ export default {
                 })
                     .then(res => {
                         commit('setToken', res.data.data)
-                        Cookies.set('token', res.data.data)
+                        Cookies.set('token', res.data.data.token)
                         if (res.data.code < 0) {
                             iView.Message.error(res.data.msg)
                         }
@@ -107,9 +107,8 @@ export default {
         getUserInfo({ commit }) {
             return new Promise((resolve, reject) => {
                 try {
-                    User.getUserInfo(JSON.parse(Cookies.get('token')).token)
+                    User.getUserInfo(Cookies.get('token'))
                         .then(res => {
-                            console.log(res.data)
                             const data = res.data.data
                             commit('setAvatar', 'https://pic2.zhimg.com/80/v2-8df0e1ada7af09d3c62f2ba5ec4e4266_hd.jpg')
                             commit('setUserName', data.username)

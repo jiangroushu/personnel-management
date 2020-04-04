@@ -2,7 +2,7 @@
     <Card shadow>
         <Form ref="formInline" :model="formInline" :rules="ruleInline" :label-width="100" style="width:400px">
             <FormItem prop="oldPassword" label="旧密码">
-                <i-input type="password" password v-model="formInline.oldPassword" placeholder="请输入旧密码……">
+                <i-input validate-on-blur type="password" password v-model="formInline.oldPassword" placeholder="请输入旧密码……">
                     <Icon type="ios-lock-outline" slot="prepend"></Icon>
                 </i-input>
             </FormItem>
@@ -86,7 +86,7 @@ export default {
         handleSubmit(name) {
             this.$refs[name].validate(async valid => {
                 if (valid) {
-                    let userId = JSON.parse(Cookies.get('token')).token
+                    let userId = this.$store.state.user.userId
                     let res = await User.updatePassword({ user_id: userId, ...{ updateInfo: { user_pwd: this.formInline.againPassword } } })
                     if (res.data.code === 1) {
                         this.$Message.success('修改密码成功!')
