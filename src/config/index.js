@@ -2,7 +2,7 @@ export default {
     /**
      * @description 配置显示在浏览器标签的title
      */
-    title: 'wattime-admin',
+    title: '人事管理系统',
     /**
      * @description token在Cookie中存储的天数，默认1天
      */
@@ -20,7 +20,7 @@ export default {
         // dev: 'http://10.73.55.86:8080',
         dev: 'http://182.92.122.129:80/index.php?s=',
         // dev: 'https://easy-mock.com/mock/5d887935b2e0b6264fe76be0/v1',
-        pro: 'https://produce.com'
+        pro: 'http://182.92.122.129:80/index.php?s='
     },
     /**
      * @description 默认打开的首页的路由name值，默认为home
