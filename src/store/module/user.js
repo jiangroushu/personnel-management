@@ -65,25 +65,39 @@ export default {
     },
     actions: {
         // 登录
-        handleLogin({ commit }, { userName, password }) {
-            userName = userName.trim()
-            return new Promise((resolve, reject) => {
-                User.login({
-                    userName,
-                    password
-                })
-                    .then(res => {
-                        commit('setToken', res.data.data)
-                        Cookies.set('token', res.data.data.token)
-                        if (res.data.code < 0) {
-                            iView.Message.error(res.data.msg)
-                        }
-                        resolve()
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-            })
+        // handleLogin({ commit }, { userName, password }) {
+        //     userName = userName.trim()
+        //     return new Promise((resolve, reject) => {
+        //         User.login({
+        //             userName,
+        //             password
+        //         })
+        //             .then(res => {
+        //                 if (res.data.code < 0) {
+        //                     iView.Message.error(res.data.msg)
+        //                 }
+        //                 commit('setToken', res.data.data)
+        //                 Cookies.set('token', res.data.data.token)
+        //                 resolve()
+        //             })
+        //             .catch(err => {
+        //                 reject(err)
+        //             })
+        //     })
+        // },
+        async handleLogin({ commit }, { userName, password }) {
+            try {
+                userName = userName.trim()
+                let res = await User.login({ userName, password })
+                if (res.data.code > 0) {
+                    commit('setToken', res.data.data)
+                    Cookies.set('token', res.data.data.token)
+                } else {
+                    iView.Message.error(res.data.msg)
+                }
+            } catch (error) {
+                iView.Message.error(error)
+            }
         },
         // 退出登录
         handleLogOut({ state, commit }) {
@@ -110,7 +124,7 @@ export default {
                     User.getUserInfo(Cookies.get('token'))
                         .then(res => {
                             const data = res.data.data
-                            commit('setAvatar', 'https://pic2.zhimg.com/80/v2-8df0e1ada7af09d3c62f2ba5ec4e4266_hd.jpg')
+                            commit('setAvatar', '')
                             commit('setUserName', data.username)
                             commit('setUserId', data.id)
                             commit('setAccess', [data.username])

@@ -1,7 +1,7 @@
 <template>
     <Layout style="height: 100%" class="main">
         <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{ overflow: 'hidden' }">
-            <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
+            <side-menu accordion ref="sideMenu" theme="dark" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
                 <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
                 <div class="logo-con">
                     <div v-show="!collapsed" style="" class="logo-wrap">
@@ -194,3 +194,18 @@ export default {
     }
 }
 </script>
+//
+<style lang="less" scoped>
+// /deep/ .ivu-layout {
+//     border: 1px solid #d7dde4;
+//     background: #f5f7f9;
+//     position: relative;
+//     border-radius: 4px;
+//     overflow: hidden;
+// }
+// /deep/ .layout-header-bar {
+//     background: #fff;
+//     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+// }
+//
+</style>
